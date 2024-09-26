@@ -35,11 +35,11 @@ db_chroma = Chroma.from_documents(chunks, embeddings, persist_directory=CHROMA_P
 
 query = 'Give any question'
 
-# retrieve context - top 5 most relevant (closests) chunks to the query vector 
-# (by default Langchain is using cosine distance metric)
+# retrieve context - top 5 most relevant (closest) chunks to the query vector 
+# (by default Langchain uses cosine distance metric)
 docs_chroma = db_chroma.similarity_search_with_score(query, k=10)
 
-# generate an answer based on given user query and retrieved context information
+# generate an answer based on the user query and retrieved context information
 context_text = "\n\n".join([doc.page_content for doc, _score in docs_chroma])
 
 # you can use a prompt template
@@ -57,8 +57,10 @@ Do not say "according to the context" or "mentioned in the context" or similar.
 prompt_template = ChatPromptTemplate.from_template(PROMPT_TEMPLATE)
 prompt = prompt_template.format(context=context_text, question=query)
 
-# call LLM model to generate the answer based on the given context and query
-model = ChatOpenAI(openai_api_key=OPENAI_API_KEY, model_name="gpt-4o-mini")
+# Explicitly set temperature to None or 1
+model = ChatOpenAI(openai_api_key=OPENAI_API_KEY, model_name="o1-preview", temperature=1)
+
+# Generate the response based on the given context and query
 response_text = model.invoke(prompt)
 
 print(response_text.content)

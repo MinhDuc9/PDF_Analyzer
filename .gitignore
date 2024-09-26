@@ -1,3 +1,4 @@
 myenv
 chroma
 .env
+.DS_Store

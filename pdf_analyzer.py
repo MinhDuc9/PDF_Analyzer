@@ -26,16 +26,6 @@ embeddings = OpenAIEmbeddings(openai_api_key=OPENAI_API_KEY)
 
 db_chroma = Chroma.from_documents(chunks, embeddings, persist_directory=CHROMA_PATH)
 
-PROMPT_TEMPLATE = """
-Answer the question based only on the following context:
-{context}
-Answer the question based on the above context: {question}.
-Provide a detailed answer.
-Don’t justify your answers.
-Don’t give information not mentioned in the CONTEXT INFORMATION.
-Do not say "according to the context" or "mentioned in the context" or similar.
-"""
-
 # Define a prompt template
 PROMPT_TEMPLATE = """
 Answer the question based only on the following context:
@@ -48,7 +38,7 @@ Do not say "according to the context" or "mentioned in the context" or similar.
 """
 
 # Create the ChatOpenAI model instance
-model = ChatOpenAI(openai_api_key=OPENAI_API_KEY, model_name="gpt-4o")
+model = ChatOpenAI(openai_api_key=OPENAI_API_KEY, model_name="o1-preview", temperature=1)
 
 # Start interactive chat
 print("Interactive Chat - Type 'exit' to quit")
